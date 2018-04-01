@@ -44,17 +44,31 @@ class CryptoListWidget extends StatelessWidget {
     // Build describes the widget in terms of other, lower-level widgets.
     return new Scaffold(
       body: _buildBody(),
-      backgroundColor: Colors.blueGrey[300]
-        ,
-      floatingActionButton: new  FloatingActionButton(onPressed: ()
-      {
+      backgroundColor: Colors.blueGrey[300],
+      floatingActionButton: new Builder(
+        // Create an inner BuildContext so that the onPressed methods
+        // can refer to the Scaffold with Scaffold.of().
+          builder: (BuildContext context)
+          {
+            return _snack(context);
+          }),
+    );
+  }
 
-      } ,
-          child: new Icon(Icons.add_alert,
-          color: Colors.pink[900]),
-        backgroundColor: Colors.orange[400],
+  FloatingActionButton _snack (BuildContext context) {
+    return new FloatingActionButton(
+      onPressed: () {
+        Scaffold.of(context).showSnackBar(
+            new SnackBar(content: new Text("Coming soon"),
+                action: new SnackBarAction(
+                    label: "UNDO",
+                    onPressed: () => Scaffold.of(context).hideCurrentSnackBar())
+            )
+        );
+      },
+      child: new Icon(Icons.add_alert, color: Colors.pink[900]),
+      backgroundColor: Colors.orange[400],
 
-      ),
     );
   }
 
