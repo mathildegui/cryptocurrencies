@@ -32,7 +32,7 @@ Future<List> getCurrencies() async {
 
 class CryptoListWidget extends StatelessWidget {
   // This is a list of material colors. Feel free to add more colors, it won't break the code
-  final List<MaterialColor> _colors = [Colors.blue, Colors.indigo, Colors.red];
+  final List<MaterialColor> _colors = [Colors.pink, Colors.pink, Colors.pink];
   // The underscore before a variable name marks it as a private variable
   final List _currencies;
   // This is a constructor in Dart. We are assigning the value passed to the constructor
@@ -44,7 +44,17 @@ class CryptoListWidget extends StatelessWidget {
     // Build describes the widget in terms of other, lower-level widgets.
     return new Scaffold(
       body: _buildBody(),
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.blueGrey[300]
+        ,
+      floatingActionButton: new  FloatingActionButton(onPressed: ()
+      {
+
+      } ,
+          child: new Icon(Icons.add_alert,
+          color: Colors.pink[900]),
+        backgroundColor: Colors.orange[400],
+
+      ),
     );
   }
 
@@ -64,12 +74,12 @@ class CryptoListWidget extends StatelessWidget {
 
   Widget _getAppTitleWidget() {
     return new Text(
-        'Cryptocurrencies',
-        style: new TextStyle(
+      'Cryptocurrencies',
+      style: new TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 24.0
-        ),
+      ),
     );
   }
 
@@ -78,32 +88,33 @@ class CryptoListWidget extends StatelessWidget {
     // available space in the vertical axis
     return new Flexible(
         child: new ListView.builder(
-        // The number of items to show
-        itemCount: _currencies.length,
-        // Callback that should return ListView children
-        // The index parameter = 0...(itemCount-1)
-        itemBuilder: (context, index) {
-          // Get the currency at this position
-          final Map currency = _currencies[index];
+          // The number of items to show
+            itemCount: _currencies.length,
+            // Callback that should return ListView children
+            // The index parameter = 0...(itemCount-1)
+            itemBuilder: (context, index) {
+              // Get the currency at this position
+              final Map currency = _currencies[index];
 
 
-          // Get the icon color. Since x mod y, will always be less than y,
-          // this will be within bounds
-          final MaterialColor color = _colors[index % _colors.length];
-          return _getListItemWidget(currency, color);
-        }
-      )
+              // Get the icon color. Since x mod y, will always be less than y,
+              // this will be within bounds
+//              final MaterialColor color = _colors[index % _colors.length];
+              final Color color = Colors.pink[900];
+              return _getListItemWidget(currency, color);
+            }
+        )
     ) ;
   }
 
-  CircleAvatar _getLeadingWidget(String currencyName, MaterialColor color) {
+  CircleAvatar _getLeadingWidget(String currencyName, Color color) {
     return new CircleAvatar(
       backgroundColor: color,
       child: new Text(currencyName[0]),
     );
   }
 
-  ListTile _getListTile(Map currency, MaterialColor color) {
+  ListTile _getListTile(Map currency, Color color) {
     return new ListTile(
       leading: _getLeadingWidget(currency['name'], color),
       title: _getTitleWidget(currency['name']),
@@ -113,7 +124,7 @@ class CryptoListWidget extends StatelessWidget {
     );
   }
 
-  Container _getListItemWidget(Map currency, MaterialColor color) {
+  Container _getListItemWidget(Map currency, Color color) {
     // Returns a container widget that has a card child and a top margin of 5.0
     return new Container(
       margin: const EdgeInsets.only(top: 5.0),
