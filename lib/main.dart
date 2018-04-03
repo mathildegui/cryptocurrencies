@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
-  print("Hello world");
-
   List currencies = await getCurrencies();
   print(currencies);
 
@@ -31,12 +29,7 @@ Future<List> getCurrencies() async {
 }
 
 class CryptoListWidget extends StatelessWidget {
-  // This is a list of material colors. Feel free to add more colors, it won't break the code
-  final List<MaterialColor> _colors = [Colors.pink, Colors.pink, Colors.pink];
-  // The underscore before a variable name marks it as a private variable
   final List _currencies;
-  // This is a constructor in Dart. We are assigning the value passed to the constructor
-  // to the _currencies variable
   CryptoListWidget(this._currencies);
 
   @override
@@ -80,7 +73,7 @@ class CryptoListWidget extends StatelessWidget {
         // A column widget can have several widgets that are placed in a top down fashion
         children: <Widget>[
           _getAppTitleWidget(),
-          _getListViewWidget()
+          _getListViewWidget(),
         ],
       ),
     );
@@ -92,8 +85,9 @@ class CryptoListWidget extends StatelessWidget {
       style: new TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 24.0
+          fontSize: 24.0,
       ),
+
     );
   }
 
@@ -113,9 +107,8 @@ class CryptoListWidget extends StatelessWidget {
 
               // Get the icon color. Since x mod y, will always be less than y,
               // this will be within bounds
-//              final MaterialColor color = _colors[index % _colors.length];
               final Color color = Colors.pink[900];
-              return _getListItemWidget(currency, color);
+              return _getListItemWidget(currency, color, context);
             }
         )
     ) ;
@@ -128,22 +121,28 @@ class CryptoListWidget extends StatelessWidget {
     );
   }
 
-  ListTile _getListTile(Map currency, Color color) {
+  ListTile _getListTile(Map currency, Color color, BuildContext context) {
     return new ListTile(
       leading: _getLeadingWidget(currency['name'], color),
       title: _getTitleWidget(currency['name']),
       subtitle: _getSubtitleWidget(
           currency['price_usd'], currency['percent_change_1h']),
       isThreeLine: true,
+      onTap: (){
+        Navigator.push(
+          context,
+          new MaterialPageRoute(builder: (context) => new CryptoDetailWidget()),
+        );
+      },
     );
   }
 
-  Container _getListItemWidget(Map currency, Color color) {
+  Container _getListItemWidget(Map currency, Color color, BuildContext context) {
     // Returns a container widget that has a card child and a top margin of 5.0
     return new Container(
       margin: const EdgeInsets.only(top: 5.0),
       child: new Card(
-        child: _getListTile(currency, color),
+        child: _getListTile(currency, color, context),
       ),
     );
   }
@@ -155,8 +154,52 @@ class CryptoListWidget extends StatelessWidget {
     );
   }
 
-  Text _getSubtitleWidget(String priceUsd, String percentChange1h) {
-    return new Text('\$$priceUsd\n1 hour: $percentChange1h%');
+  RichText _getSubtitleWidget(String priceUsd, String percentChange1h) {
+
+    TextSpan priceTextWidget = new TextSpan(text: "\$$priceUsd\n", style:
+      new TextStyle(color: Colors.black));
+
+    String percentChangeText = "1 hour: $percentChange1h%";
+    TextSpan percentChangeTextWidget;
+
+    if(double.parse(percentChange1h) > 0) {
+      //currency price decreased. Color percent change text green
+      percentChangeTextWidget = new TextSpan(text: percentChangeText,
+      style: new TextStyle(color: Colors.green));
+    } else {
+      //currency price decreased. Color percent change text red
+      percentChangeTextWidget = new TextSpan(text: percentChangeText,
+      style: new TextStyle(color: Colors.red));
+    }
+
+    return new RichText(text: new TextSpan(
+      children: [
+        priceTextWidget,
+        percentChangeTextWidget
+      ]
+    ));
+
+//    return new Text('\$$priceUsd\n1 hour: $percentChange1h%');
+  }
+
+}
+
+class CryptoDetailWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Second Screen"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text('Go back!'),
+        ),
+      ),
+    );
   }
 
 }
