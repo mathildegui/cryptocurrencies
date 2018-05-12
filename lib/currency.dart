@@ -1,8 +1,8 @@
 class Currency {
-  final String id;
+  final int id;
   final String name;
   final String symbol;
-  final String rank;
+  final int rank;
   final String priceUsd;
   final String priceBtc;
   final String volume24Usd;
@@ -16,9 +16,9 @@ class Currency {
       name: json['name'],
       symbol: json['symbol'],
       rank: json['rank'],
-      priceUsd: json['price_usd'],
-      priceBtc: json['price_btc'],
-      volume24Usd: json['24h_volume_usd'],
+//      priceUsd: json['price_usd'],
+//      priceBtc: json['price_btc'],
+//      volume24Usd: json['24h_volume_usd'],
     );
   }
 }

@@ -78,8 +78,6 @@ class CryptoListWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               // Get the currency at this position
               final Map currency = _currencies[index];
-
-
               // Get the icon color. Since x mod y, will always be less than y,
               // this will be within bounds
               final Color color = Colors.pink[900];
@@ -100,13 +98,14 @@ class CryptoListWidget extends StatelessWidget {
     return new ListTile(
       leading: _getLeadingWidget(currency['name'], color),
       title: _getTitleWidget(currency['name']),
-      subtitle: _getSubtitleWidget(
-          currency['price_usd'], currency['percent_change_1h']),
+//      subtitle: _getSubtitleWidget(
+//          currency['price_usd'], currency['percent_change_1h']),
+      subtitle: new Text(currency['symbol']),
       isThreeLine: true,
       onTap: () {
         Navigator.push(
           context,
-          new MaterialPageRoute(builder: (context) => new CryptoDetailWidget(id : currency['id'])),
+          new MaterialPageRoute(builder: (context) => new CryptoDetailWidget(id : currency['id'].toString())),
         );
       },
     );
